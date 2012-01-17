@@ -3,6 +3,7 @@
  *
  * Text entry by DTMF
  * 
+ * Copyright (C) 2012, Doug Luce
  * Copyright (C) 2003, Steve Underwood
  *
  * Steve Underwood <steveu@coppice.org>
@@ -481,7 +482,8 @@ static int get_input_text(struct ast_channel *chan, const char *variable_name, c
     {
         res = ast_set_read_format_by_id(chan, original_read_fmt.id);
         if (res)
-            ast_log(LOG_WARNING, "Unable to restore read format on '%s'\n", chan->name);
+            ast_log(LOG_WARNING, "Unable to restore read format on '%s'\n", 
+		    ast_channel_name(chan));
         /*endif*/
     }
     /*endif*/
