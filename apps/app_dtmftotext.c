@@ -14,15 +14,15 @@
 
 #include <sys/types.h>
 #include <stdio.h>
-#include <asterisk.h>
-#include <asterisk/file.h>
-#include <asterisk/logger.h>
-#include <asterisk/channel.h>
-#include <asterisk/pbx.h>
-#include <asterisk/module.h>
-#include <asterisk/pbx.h>
-#include <asterisk/md5.h>
-#include <asterisk/config.h>
+#include "asterisk.h"
+#include "asterisk/file.h"
+#include "asterisk/logger.h"
+#include "asterisk/channel.h"
+#include "asterisk/pbx.h"
+#include "asterisk/module.h"
+#include "asterisk/pbx.h"
+#include "asterisk/md5.h"
+#include "asterisk/config.h"
 #include <ctype.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -212,7 +212,7 @@ static int get_input_text(struct ast_channel *chan, const char *variable_name, c
     }
     /*endif*/
 
-    original_read_fmt = chan->readformat;
+    ast_format_copy(&original_read_fmt, ast_channel_readformat(chan));
     if (original_read_fmt.id != AST_FORMAT_SLINEAR)
     {
         res = ast_set_read_format_by_id(chan, AST_FORMAT_SLINEAR);
@@ -520,7 +520,7 @@ static int dtmftotext_exec(struct ast_channel *chan, const char *data)
             imax_time = atoi(max_time);
             if (variable_name  &&  initial_digits)
             {
-                if (chan->_state != AST_STATE_UP)
+	      if (ast_channel_state(chan) != AST_STATE_UP)
                 {
                     /* Shouldn't need this, but checking to see if channel is already answered
                      * Theoretically asterisk should already have answered before running the app */
